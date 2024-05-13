@@ -1,0 +1,32 @@
+meu_projeto/
+│
+├── manage.py            # Script para executar tarefas administrativas do Django
+│
+├── meu_app/
+│   ├── __init__.py      # Arquivo vazio que indica que este diretório é um pacote Python
+│   ├── admin.py         # Arquivo para registrar modelos no admin do Django (opcional)
+│   ├── apps.py          # Configuração da aplicação Django
+│   ├── filters.py       # Contém o filtro personalizado 'get_attr'
+│   ├── forms.py         # Contém o formulário CompraForm
+│   ├── migrations/      # Diretório para armazenar migrações do banco de dados
+│   │   └── ...
+│   ├── models.py        # Contém o modelo Compra
+│   ├── templates/       # Diretório para armazenar arquivos de template HTML
+│   │   ├── confirmar_delete.html   # Template para confirmação de exclusão de compras
+│   │   ├── editar_compra.html      # Template para edição de compras
+│   │   ├── lista_compras.html      # Template para listar todas as compras
+│   │   └── nova_compra.html        # Template para adicionar uma nova compra
+│   ├── tests.py         # Arquivo para escrever testes unitários (opcional)
+│   ├── urls.py          # Arquivo para definir as URLs da aplicação (opcional)
+│   └── views.py         # Contém as funções de visualização (views) da aplicação
+│
+├── meu_projeto/
+│   ├── __init__.py      # Arquivo vazio que indica que este diretório é um pacote Python
+│   ├── asgi.py          # Configuração do servidor ASGI (opcional)
+│   ├── settings.py      # Arquivo de configuração do projeto Django
+│   ├── urls.py          # Arquivo para definir as URLs do projeto
+│   └── wsgi.py          # Configuração do servidor WSGI (opcional)
+│
+├── db.sqlite3           # Arquivo de banco de dados SQLite (utilizado por padrão)
+│
+└── requirements.txt     # Arquivo para listar as dependências do projeto (opcional)
