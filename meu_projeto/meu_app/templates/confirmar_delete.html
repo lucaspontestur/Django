@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmar Exclusão</title>
+</head>
+<body>
+    <h1>Confirmar Exclusão</h1>
+    <p>Tem certeza que deseja excluir a compra de {{ compra.nome }} - {{ compra.pacote }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sim, excluir</button>
+        <a href="{% url 'lista_compras' %}">Cancelar</a>
+    </form>
+</body>
+</html>

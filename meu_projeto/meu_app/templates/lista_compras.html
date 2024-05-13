@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Compras</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lista de Compras</h1>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Número</th>
+            <th>Data da Compra</th>
+            <th>Pacote</th>
+            <th>Valor</th>
+            <th>Ações</th>
+        </tr>
+        {% for compra in compras %}
+        <tr>
+            <td>{{ compra.nome }}</td>
+            <td>{{ compra.email }}</td>
+            <td>{{ compra.numero }}</td>
+            <td>{{ compra.data_compra }}</td>
+            <td>{{ compra.pacote }}</td>
+            <td>{{ compra.valor }}</td>
+            <td>
+                <a href="{% url 'editar_compra' compra.pk %}">Editar</a>
+                <a href="{% url 'deletar_compra' compra.pk %}">Deletar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'nova_compra' %}">Adicionar Nova Compra</a>
+</body>
+</html>

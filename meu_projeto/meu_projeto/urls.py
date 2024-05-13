@@ -1,9 +1,9 @@
 from django.urls import path
 from meu_app import views
-from django.shortcuts import redirect
 
 urlpatterns = [
-    path('', lambda request: redirect('enviar_texto')),  # Redireciona para /enviar/
-    path('enviar/', views.enviar_texto, name='enviar_texto'),
-    path('lista/', views.lista_textos, name='lista_textos'),
+    path('', views.lista_compras, name='lista_compras'),
+    path('nova/', views.nova_compra, name='nova_compra'),
+    path('editar/<int:pk>/', views.editar_compra, name='editar_compra'),
+    path('deletar/<int:pk>/', views.deletar_compra, name='deletar_compra'),
 ]
