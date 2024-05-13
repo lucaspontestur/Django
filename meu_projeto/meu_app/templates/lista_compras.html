@@ -19,24 +19,25 @@
 </head>
 <body>
     <h1>Lista de Compras</h1>
+    <form>
+        <label>Campos a serem exibidos:</label>
+        {% for campo in campos_disponiveis %}
+        <input type="checkbox" name="campos" value="{{ campo }}" {% if campo in campos_selecionados %}checked{% endif %}>{{ campo }}
+        {% endfor %}
+        <button type="submit">Filtrar</button>
+    </form>
     <table>
         <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Número</th>
-            <th>Data da Compra</th>
-            <th>Pacote</th>
-            <th>Valor</th>
+            {% for campo in campos_selecionados %}
+            <th>{{ campo }}</th>
+            {% endfor %}
             <th>Ações</th>
         </tr>
         {% for compra in compras %}
         <tr>
-            <td>{{ compra.nome }}</td>
-            <td>{{ compra.email }}</td>
-            <td>{{ compra.numero }}</td>
-            <td>{{ compra.data_compra }}</td>
-            <td>{{ compra.pacote }}</td>
-            <td>{{ compra.valor }}</td>
+            {% for campo in campos_selecionados %}
+            <td>{{ compra|get_attr:campo }}</td>
+            {% endfor %}
             <td>
                 <a href="{% url 'editar_compra' compra.pk %}">Editar</a>
                 <a href="{% url 'deletar_compra' compra.pk %}">Deletar</a>

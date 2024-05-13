@@ -4,7 +4,10 @@ from .forms import CompraForm
 
 def lista_compras(request):
     compras = Compra.objects.all()
-    return render(request, 'lista_compras.html', {'compras': compras})
+    campos_disponiveis = ['nome', 'email', 'numero', 'data_compra', 'pacote', 'valor']
+    campos_selecionados = request.GET.getlist('campos', campos_disponiveis)
+
+    return render(request, 'lista_compras.html', {'compras': compras, 'campos_disponiveis': campos_disponiveis, 'campos_selecionados': campos_selecionados})
 
 def nova_compra(request):
     if request.method == 'POST':
