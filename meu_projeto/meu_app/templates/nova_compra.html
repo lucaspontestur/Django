@@ -1,16 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Nova Compra</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
-    <h1>Nova Compra</h1>
-    <a href="{% url 'lista_compras' %}">Voltar ao menu</a>
+{% extends 'base.html' %}
+{% block content %}
+Nova Compra
+<a href="{% url 'lista_compras' %}" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md mb-4 inline-block">Voltar ao menu</a>
+
+<div class="bg-gray-700 rounded-lg shadow-md p-6">
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Salvar</button>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-gray-200 font-medium mb-2">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="mt-2 text-red-500">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md mt-4">Salvar</button>
     </form>
-</body>
-</html>
+</div>
+{% endblock %}
