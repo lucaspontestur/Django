@@ -5,6 +5,7 @@
 </head>
 <body>
     <h1>Nova Compra</h1>
+    <a href="{% url 'lista_compras' %}">Voltar ao menu</a>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

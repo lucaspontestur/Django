@@ -15,35 +15,129 @@
         th {
             background-color: #f2f2f2;
         }
+        .titulo {
+            text-align: center;
+        }
+        .add-button {
+            display: block;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        .filter-table td {
+            padding: 5px; /* Diminua o espaçamento vertical */
+        }
     </style>
+    {% load static %}
+    
 </head>
 <body>
-    <h1>Lista de Compras</h1>
+    <h1 class="titulo">Lista de Compras</h1>
+
+    <form method="GET" id="filtroForm">
+        <table class="filter-table">
+            <tr>
+                <td><label for="nome">Nome:</label></td>
+                <td><input type="checkbox" name="nome" id="nome" {% if request.GET.nome %}checked{% endif %}></td>
+                <td><label for="email">Email:</label></td>
+                <td><input type="checkbox" name="email" id="email" {% if request.GET.email %}checked{% endif %}></td>
+            </tr>
+            <tr>
+                <td><label for="numero">Número:</label></td>
+                <td><input type="checkbox" name="numero" id="numero" {% if request.GET.numero %}checked{% endif %}></td>
+                <td><label for="data_compra">Data da Compra:</label></td>
+                <td><input type="checkbox" name="data_compra" id="data_compra" {% if request.GET.data_compra %}checked{% endif %}></td>
+            </tr>
+            <tr>
+                <td><label for="pacote">Pacote:</label></td>
+                <td><input type="checkbox" name="pacote" id="pacote" {% if request.GET.pacote %}checked{% endif %}></td>
+                <td><label for="valor">Valor:</label></td>
+                <td><input type="checkbox" name="valor" id="valor" {% if request.GET.valor %}checked{% endif %}></td>
+            </tr>
+            <tr>
+                <td><label for="taxa_catarse">Taxa Catarse:</label></td>
+                <td><input type="checkbox" name="taxa_catarse" id="taxa_catarse" {% if request.GET.taxa_catarse %}checked{% endif %}></td>
+                <td><label for="faturamento">Faturamento:</label></td>
+                <td><input type="checkbox" name="faturamento" id="faturamento" {% if request.GET.faturamento %}checked{% endif %}></td>
+            </tr>
+        </table>
+        <button type="submit">Filtrar</button>
+        <a href="{% url 'download_compras' %}">Baixar Compras</a>
+    </form>
+
     <table>
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Número</th>
-            <th>Data da Compra</th>
-            <th>Pacote</th>
-            <th>Valor</th>
-            <th>Ações</th>
-        </tr>
-        {% for compra in compras %}
-        <tr>
-            <td>{{ compra.nome }}</td>
-            <td>{{ compra.email }}</td>
-            <td>{{ compra.numero }}</td>
-            <td>{{ compra.data_compra }}</td>
-            <td>{{ compra.pacote }}</td>
-            <td>{{ compra.valor }}</td>
-            <td>
-                <a href="{% url 'editar_compra' compra.pk %}">Editar</a>
-                <a href="{% url 'deletar_compra' compra.pk %}">Deletar</a>
-            </td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                {% if request.GET.nome %}<th>Nome</th>{% endif %}
+                {% if request.GET.email %}<th>Email</th>{% endif %}
+                {% if request.GET.numero %}<th>Número</th>{% endif %}
+                {% if request.GET.data_compra %}<th>Data da Compra</th>{% endif %}
+                {% if request.GET.pacote %}<th>Pacote</th>{% endif %}
+                {% if request.GET.valor %}<th>Valor</th>{% endif %}
+                {% if request.GET.taxa_catarse %}<th>Taxa Catarse</th>{% endif %}
+                {% if request.GET.faturamento %}<th>Faturamento</th>{% endif %}
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for compra in compras %}
+            <tr>
+                {% if request.GET.nome %}<td>{{ compra.nome }}</td>{% endif %}
+                {% if request.GET.email %}<td>{{ compra.email }}</td>{% endif %}
+                {% if request.GET.numero %}<td>{{ compra.numero_formatado }}</td>{% endif %}
+                {% if request.GET.data_compra %}<td>{{ compra.data_compra|date:"d/m/Y" }}</td>{% endif %}
+                {% if request.GET.pacote %}<td>{{ compra.pacote }}</td>{% endif %}
+                {% if request.GET.valor %}<td>{{ compra.valor_formatado }}</td>{% endif %}
+                {% if request.GET.taxa_catarse %}<td>{{ compra.taxa_catarse_formatada }}</td>{% endif %}
+                {% if request.GET.faturamento %}<td>{{ compra.faturamento_formatado }}</td>{% endif %}
+                <td>
+                    <a href="{% url 'editar_compra' compra.pk %}">Editar</a>
+                    <a href="{% url 'deletar_compra' compra.pk %}">Deletar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-    <a href="{% url 'nova_compra' %}">Adicionar Nova Compra</a>
+    <a href="{% url 'nova_compra' %}" class="add-button">Adicionar Nova Compra</a>
+    
+
+    <script>
+        // Função para salvar os filtros no LocalStorage
+        function salvarFiltros() {
+            const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                localStorage.setItem(checkbox.id, checkbox.checked);
+            });
+        }
+
+        // Função para carregar os filtros do LocalStorage
+        function carregarFiltros() {
+            const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                const checked = localStorage.getItem(checkbox.id);
+                if (checked === 'true') {
+                    checkbox.checked = true;
+                }
+            });
+        }
+
+        // Função para aplicar os filtros à tabela
+        function aplicarFiltros() {
+            const form = document.getElementById('filtroForm');
+            form.submit();
+        }
+
+        // Carregar os filtros ao carregar a página
+        window.addEventListener('load', carregarFiltros);
+
+        // Salvar os filtros ao alterar as caixas de seleção
+        const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', salvarFiltros);
+        });
+
+        // Aplicar os filtros ao submeter o formulário
+        const form = document.getElementById('filtroForm');
+        form.addEventListener('submit', aplicarFiltros);
+    </script>
 </body>
 </html>
