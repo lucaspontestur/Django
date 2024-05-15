@@ -3,8 +3,12 @@
 {% block content %}
     <h1 class="text-3xl font-bold text-center text-gray-200 mb-8">Lista de Compras</h1>
 
+    <div class="flex justify-center mb-4">
+        <button id="toggleFiltros" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Filtros</button>
+    </div>
+
     <form method="GET" id="filtroForm" class="mb-4">
-        <table class="filter-table w-full">
+        <table class="filter-table w-full hidden" id="opcoesFiltros">
             <tr>
                 <td><label for="nome" class="text-gray-200">Nome:</label></td>
                 <td><input type="checkbox" name="nome" id="nome" {% if request.GET.nome %}checked{% endif %}></td>
@@ -72,7 +76,7 @@
         </table>
     </div>
 
-    <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Adicionar Nova Compra</a>
+    <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95">Adicionar Nova Compra</a>
 
     <script>
         // Função para salvar os filtros no LocalStorage
@@ -112,5 +116,13 @@
         // Aplicar os filtros ao submeter o formulário
         const form = document.getElementById('filtroForm');
         form.addEventListener('submit', aplicarFiltros);
+        
+        // Código para mostrar/ocultar as opções de filtro
+        const botaoFiltros = document.getElementById('toggleFiltros');
+        const opcoesFiltros = document.getElementById('opcoesFiltros');
+
+        botaoFiltros.addEventListener('click', () => {
+            opcoesFiltros.classList.toggle('hidden');
+        });
     </script>
 {% endblock %}
