@@ -11,59 +11,61 @@
         <table class="filter-table w-full hidden" id="opcoesFiltros">
             <tr>
                 <td><label for="nome" class="text-gray-200">Nome:</label></td>
-                <td><input type="checkbox" name="nome" id="nome" {% if request.GET.nome %}checked{% endif %}></td>
+                <td><input type="checkbox" name="nome" id="nome" {% if filtros.nome == 'on' %}checked{% endif %}></td>
                 <td><label for="email" class="text-gray-200">Email:</label></td>
-                <td><input type="checkbox" name="email" id="email" {% if request.GET.email %}checked{% endif %}></td>
+                <td><input type="checkbox" name="email" id="email" {% if filtros.email == 'on' %}checked{% endif %}></td>
             </tr>
             <tr>
                 <td><label for="numero" class="text-gray-200">Número:</label></td>
-                <td><input type="checkbox" name="numero" id="numero" {% if request.GET.numero %}checked{% endif %}></td>
+                <td><input type="checkbox" name="numero" id="numero" {% if filtros.numero == 'on' %}checked{% endif %}></td>
                 <td><label for="data_compra" class="text-gray-200">Data da Compra:</label></td>
-                <td><input type="checkbox" name="data_compra" id="data_compra" {% if request.GET.data_compra %}checked{% endif %}></td>
+                <td><input type="checkbox" name="data_compra" id="data_compra" {% if filtros.data_compra == 'on' %}checked{% endif %}></td>
             </tr>
             <tr>
                 <td><label for="pacote" class="text-gray-200">Pacote:</label></td>
-                <td><input type="checkbox" name="pacote" id="pacote" {% if request.GET.pacote %}checked{% endif %}></td>
+                <td><input type="checkbox" name="pacote" id="pacote" {% if filtros.pacote == 'on' %}checked{% endif %}></td>
                 <td><label for="valor" class="text-gray-200">Valor:</label></td>
-                <td><input type="checkbox" name="valor" id="valor" {% if request.GET.valor %}checked{% endif %}></td>
+                <td><input type="checkbox" name="valor" id="valor" {% if filtros.valor == 'on' %}checked{% endif %}></td>
             </tr>
             <tr>
                 <td><label for="taxa_catarse" class="text-gray-200">Taxa Catarse:</label></td>
-                <td><input type="checkbox" name="taxa_catarse" id="taxa_catarse" {% if request.GET.taxa_catarse %}checked{% endif %}></td>
+                <td><input type="checkbox" name="taxa_catarse" id="taxa_catarse" {% if filtros.taxa_catarse == 'on' %}checked{% endif %}></td>
                 <td><label for="faturamento" class="text-gray-200">Faturamento:</label></td>
-                <td><input type="checkbox" name="faturamento" id="faturamento" {% if request.GET.faturamento %}checked{% endif %}></td>
+                <td><input type="checkbox" name="faturamento" id="faturamento" {% if filtros.faturamento == 'on' %}checked{% endif %}></td>
             </tr>
         </table>
-        <div class="flex justify-center py-2"> <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Filtrar</button>
-             <a href="{% url 'download_compras' %}" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Compras</a> </div>
+        <div class="flex justify-center py-2">
+            <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Filtrar</button>
+            <a href="{% url 'download_compras' %}" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Compras</a>
+        </div>
     </form>
 
     <div class="bg-gray-700 rounded-lg shadow-md overflow-hidden"> 
         <table class="w-full">
             <thead>
                 <tr>
-                    {% if request.GET.nome %}<th><div class="py-3 px-6 text-left text-gray-200">Nome</div></th>{% endif %}
-                    {% if request.GET.email %}<th><div class="py-3 px-6 text-left text-gray-200">Email</div></th>{% endif %}
-                    {% if request.GET.numero %}<th><div class="py-3 px-6 text-left text-gray-200">Número</div></th>{% endif %}
-                    {% if request.GET.data_compra %}<th><div class="py-3 px-6 text-left text-gray-200">Data da Compra</div></th>{% endif %}
-                    {% if request.GET.pacote %}<th><div class="py-3 px-6 text-left text-gray-200">Pacote</div></th>{% endif %}
-                    {% if request.GET.valor %}<th><div class="py-3 px-6 text-left text-gray-200">Valor</div></th>{% endif %}
-                    {% if request.GET.taxa_catarse %}<th><div class="py-3 px-6 text-left text-gray-200">Taxa Catarse</div></th>{% endif %}
-                    {% if request.GET.faturamento %}<th><div class="py-3 px-6 text-left text-gray-200">Faturamento</div></th>{% endif %}
+                    {% if filtros.nome == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Nome</div></th>{% endif %}
+                    {% if filtros.email == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Email</div></th>{% endif %}
+                    {% if filtros.numero == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Número</div></th>{% endif %}
+                    {% if filtros.data_compra == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Data da Compra</div></th>{% endif %}
+                    {% if filtros.pacote == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Pacote</div></th>{% endif %}
+                    {% if filtros.valor == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Valor</div></th>{% endif %}
+                    {% if filtros.taxa_catarse == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Taxa Catarse</div></th>{% endif %}
+                    {% if filtros.faturamento == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Faturamento</div></th>{% endif %}
                     <th><div class="py-3 px-6 text-left text-gray-200">Ações</div></th>
                 </tr>
             </thead>
             <tbody>
                 {% for compra in compras %}
                     <tr class="hover:bg-gray-600">
-                        {% if request.GET.nome %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.nome }}</div></td>{% endif %}
-                        {% if request.GET.email %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.email }}</div></td>{% endif %}
-                        {% if request.GET.numero %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.numero_formatado }}</div></td>{% endif %}
-                        {% if request.GET.data_compra %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.data_compra|date:"d/m/Y" }}</div></td>{% endif %}
-                        {% if request.GET.pacote %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.pacote }}</div></td>{% endif %}
-                        {% if request.GET.valor %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.valor_formatado }}</div></td>{% endif %}
-                        {% if request.GET.taxa_catarse %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.taxa_catarse_formatada }}</div></td>{% endif %}
-                        {% if request.GET.faturamento %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.faturamento_formatado }}</div></td>{% endif %}
+                        {% if filtros.nome == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.nome }}</div></td>{% endif %}
+                        {% if filtros.email == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.email }}</div></td>{% endif %}
+                        {% if filtros.numero == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.numero_formatado }}</div></td>{% endif %}
+                        {% if filtros.data_compra == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.data_compra|date:"d/m/Y" }}</div></td>{% endif %}
+                        {% if filtros.pacote == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.pacote }}</div></td>{% endif %}
+                        {% if filtros.valor == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.valor_formatado }}</div></td>{% endif %}
+                        {% if filtros.taxa_catarse == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.taxa_catarse_formatada }}</div></td>{% endif %}
+                        {% if filtros.faturamento == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.faturamento_formatado }}</div></td>{% endif %}
                         <td>
                             <div class="py-3 px-6 text-left">
                                 <a href="{% url 'editar_compra' compra.pk %}" class="text-blue-400 hover:text-blue-600 mr-2">Editar</a>
@@ -79,22 +81,11 @@
     <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95">Adicionar Nova Compra</a>
 
     <script>
-        // Função para salvar os filtros no LocalStorage
+        // Função para salvar os filtros nos cookies
         function salvarFiltros() {
             const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
-                localStorage.setItem(checkbox.id, checkbox.checked);
-            });
-        }
-
-        // Função para carregar os filtros do LocalStorage
-        function carregarFiltros() {
-            const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                const checked = localStorage.getItem(checkbox.id);
-                if (checked === 'true') {
-                    checkbox.checked = true;
-                }
+                document.cookie = `${checkbox.id}=${checkbox.checked ? 'on' : 'off'}`;
             });
         }
 
@@ -103,9 +94,6 @@
             const form = document.getElementById('filtroForm');
             form.submit();
         }
-
-        // Carregar os filtros ao carregar a página
-        window.addEventListener('load', carregarFiltros);
 
         // Salvar os filtros ao alterar as caixas de seleção
         const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
