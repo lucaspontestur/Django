@@ -4,7 +4,8 @@
     <h1 class="text-3xl font-bold text-center text-gray-200 mb-8">Lista de Compras</h1>
 
     <div class="flex justify-center mb-4">
-        <button id="toggleFiltros" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Filtros</button>
+        <button id="toggleFiltros" class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md mr-4">Filtros</button>
+        <button id="abrirConfiguracoes" class="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded-md">Configurações</button>
     </div>
 
     <form method="GET" id="filtroForm" class="mb-4">
@@ -36,7 +37,7 @@
         </table>
         <div class="flex justify-center py-2">
             <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Filtrar</button>
-            <a href="{% url 'download_compras' %}" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Compras</a>
+            <a href="{% url 'download_compras' %}?formato={{ formato }}" id="downloadLink" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Compras</a>
         </div>
     </form>
 
@@ -80,6 +81,20 @@
 
     <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95">Adicionar Nova Compra</a>
 
+    <div id="configuracoesModal" class="hidden fixed inset-0 flex items-center justify-center z-50">
+        <div class="modal-container bg-gray-800 text-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Configurações de Download</h2>
+            <div class="mb-4">
+                <label for="formato" class="block text-gray-200 text-sm font-bold mb-2">Formato:</label>
+                <select id="formato" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="estruturado">Estruturado (com [], {}, títulos)</option>
+                    <option value="simples">Simples (somente informações)</option>
+                </select>
+            </div>
+            <button id="fecharConfiguracoes" class="px-4 py-2 bg-gray-600 hover:bg-gray-800 text-white rounded-md">Fechar</button>
+        </div>
+    </div>
+
     <script>
         // Função para salvar os filtros nos cookies
         function salvarFiltros() {
@@ -111,6 +126,25 @@
 
         botaoFiltros.addEventListener('click', () => {
             opcoesFiltros.classList.toggle('hidden');
+        });
+
+        // Código para o modal de configurações
+        const abrirConfiguracoes = document.getElementById('abrirConfiguracoes');
+        const fecharConfiguracoes = document.getElementById('fecharConfiguracoes');
+        const configuracoesModal = document.getElementById('configuracoesModal');
+        const formatoSelect = document.getElementById('formato');
+        const downloadLink = document.getElementById('downloadLink');
+
+        abrirConfiguracoes.addEventListener('click', () => {
+            configuracoesModal.classList.remove('hidden');
+        });
+
+        fecharConfiguracoes.addEventListener('click', () => {
+            configuracoesModal.classList.add('hidden');
+        });
+
+        formatoSelect.addEventListener('change', () => {
+            downloadLink.href = `{% url 'download_compras' %}?formato=${formatoSelect.value}`;
         });
     </script>
 {% endblock %}

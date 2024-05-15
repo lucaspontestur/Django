@@ -108,7 +108,19 @@ def download_compras(request):
             compra_data['faturamento'] = str(compra.faturamento)
         data.append(compra_data)
 
-    # Escolher o formato de download (JSON neste exemplo)
-    response = HttpResponse(json.dumps(data), content_type='application/json')
-    response['Content-Disposition'] = 'attachment; filename="compras.json"'
+    # Escolher o formato de download
+    formato = request.GET.get('formato', 'estruturado')
+    if formato == 'simples':
+        # Criar uma string com as informações separadas por quebra de linha
+        conteudo = "\n".join([";".join(item.values()) for item in data])
+        content_type = 'text/plain'
+        filename = 'compras.txt'
+    else:
+        # JSON estruturado
+        conteudo = json.dumps(data)
+        content_type = 'application/json'
+        filename = 'compras.json'
+
+    response = HttpResponse(conteudo, content_type=content_type)
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
     return response
