@@ -41,8 +41,6 @@ def lista_compras(request):
     # Renderizar o template com as compras filtradas e os filtros atuais
     return render(request, 'lista_compras.html', {'compras': compras, 'filtros': filtros})
 
-# ... (restante do código views.py)
-
 def nova_compra(request):
     if request.method == 'POST':
         form = CompraForm(request.POST)
@@ -76,6 +74,7 @@ def deletar_compra(request, pk):
 def download_compras(request):
     compras = Compra.objects.all()
 
+    # Obter os filtros dos cookies
     filtros = {
         'nome': request.COOKIES.get('nome', 'off'),
         'email': request.COOKIES.get('email', 'off'),
@@ -86,26 +85,26 @@ def download_compras(request):
         'taxa_catarse': request.COOKIES.get('taxa_catarse', 'off'),
         'faturamento': request.COOKIES.get('faturamento', 'off'),
     }
-    
-    # Filtrar os dados com base nas colunas selecionadas
+
+    # Filtrar os dados com base nos filtros dos cookies
     data = []
     for compra in compras:
         compra_data = {}
-        if request.GET.get('nome'):
+        if filtros['nome'] == 'on':
             compra_data['nome'] = compra.nome
-        if request.GET.get('email'):
+        if filtros['email'] == 'on':
             compra_data['email'] = compra.email
-        if request.GET.get('numero'):
+        if filtros['numero'] == 'on':
             compra_data['numero'] = compra.numero
-        if request.GET.get('data_compra'):
+        if filtros['data_compra'] == 'on':
             compra_data['data_compra'] = compra.data_compra.strftime('%Y-%m-%d')
-        if request.GET.get('pacote'):
+        if filtros['pacote'] == 'on':
             compra_data['pacote'] = compra.pacote
-        if request.GET.get('valor'):
+        if filtros['valor'] == 'on':
             compra_data['valor'] = str(compra.valor)
-        if request.GET.get('taxa_catarse'):
+        if filtros['taxa_catarse'] == 'on':
             compra_data['taxa_catarse'] = str(compra.taxa_catarse)
-        if request.GET.get('faturamento'):
+        if filtros['faturamento'] == 'on':
             compra_data['faturamento'] = str(compra.faturamento)
         data.append(compra_data)
 
