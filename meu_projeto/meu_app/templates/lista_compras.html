@@ -1,43 +1,82 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="text-3xl font-bold text-center text-gray-200 mb-8">Lista de Compras</h1>
+    <h1 class="text-3xl font-bold text-center text-gray-200 mb-8">Lista de Apoiadores</h1>
 
     <div class="flex justify-center mb-4">
-        <button id="toggleFiltros" class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md mr-4">Filtros</button>
+        <button id="toggleFiltros" class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md mr-4">Filtrar</button>
+        <button id="toggleBusca" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded-md mr-4">Busca</button>
         <button id="abrirConfiguracoes" class="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded-md">Configurações</button>
     </div>
 
     <form method="GET" id="filtroForm" class="mb-4">
-        <table class="filter-table w-full hidden" id="opcoesFiltros">
-            <tr>
-                <td><label for="nome" class="text-gray-200">Nome:</label></td>
-                <td><input type="checkbox" name="nome" id="nome" {% if filtros.nome == 'on' %}checked{% endif %}></td>
-                <td><label for="email" class="text-gray-200">Email:</label></td>
-                <td><input type="checkbox" name="email" id="email" {% if filtros.email == 'on' %}checked{% endif %}></td>
-            </tr>
-            <tr>
-                <td><label for="numero" class="text-gray-200">Número:</label></td>
-                <td><input type="checkbox" name="numero" id="numero" {% if filtros.numero == 'on' %}checked{% endif %}></td>
-                <td><label for="data_compra" class="text-gray-200">Data da Compra:</label></td>
-                <td><input type="checkbox" name="data_compra" id="data_compra" {% if filtros.data_compra == 'on' %}checked{% endif %}></td>
-            </tr>
-            <tr>
-                <td><label for="pacote" class="text-gray-200">Pacote:</label></td>
-                <td><input type="checkbox" name="pacote" id="pacote" {% if filtros.pacote == 'on' %}checked{% endif %}></td>
-                <td><label for="valor" class="text-gray-200">Valor:</label></td>
-                <td><input type="checkbox" name="valor" id="valor" {% if filtros.valor == 'on' %}checked{% endif %}></td>
-            </tr>
-            <tr>
-                <td><label for="taxa_catarse" class="text-gray-200">Taxa Catarse:</label></td>
-                <td><input type="checkbox" name="taxa_catarse" id="taxa_catarse" {% if filtros.taxa_catarse == 'on' %}checked{% endif %}></td>
-                <td><label for="faturamento" class="text-gray-200">Faturamento:</label></td>
-                <td><input type="checkbox" name="faturamento" id="faturamento" {% if filtros.faturamento == 'on' %}checked{% endif %}></td>
-            </tr>
-        </table>
+        <div class="grid grid-cols-1 gap-4 mt-4 hidden text-center" id="opcoesBusca">
+            <div class="flex items-center justify-center">
+                {{ busca_form.busca }} <span class="ml-2 text-white text-sm">Buscar por qualquer informação</span>
+            </div>
+            <div class="flex flex-row justify-center">
+                <div class="flex items-center mr-4">
+                    {{ busca_form.data_inicio }}
+                    <span class="ml-2 text-white text-sm">Data de Início</span>
+                </div>
+                <div class="flex items-center">
+                    {{ busca_form.data_fim }}
+                    <span class="ml-2 text-white text-sm">Data de Fim</span>
+                </div>
+            </div>
+            <div class="flex flex-row justify-center">
+                <div class="flex items-center mr-4">
+                    {{ busca_form.valor_minimo }}
+                    <span class="ml-2 text-white text-sm">Valor Mínimo</span>
+                </div>
+                <div class="flex items-center">
+                    {{ busca_form.valor_maximo }}
+                    <span class="ml-2 text-white text-sm">Valor Máximo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center mb-4"> 
+            <table class="filter-table w-full hidden" id="opcoesFiltros">
+                <tr>
+                    <td colspan="4" class="text-center py-2"> 
+                        <label for="todos" class="text-white">TODOS:</label>
+                        <input type="checkbox" name="todos" id="todos">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="nome" class="text-white">Nome:</label></td>
+                    <td><input type="checkbox" name="nome" id="nome" {% if filtros.nome == 'on' %}checked{% endif %}></td>
+                    <td><label for="email" class="text-white">Email:</label></td>
+                    <td><input type="checkbox" name="email" id="email" {% if filtros.email == 'on' %}checked{% endif %}></td>
+                </tr>
+                <tr>
+                    <td><label for="numero" class="text-white">Número:</label></td>
+                    <td><input type="checkbox" name="numero" id="numero" {% if filtros.numero == 'on' %}checked{% endif %}></td>
+                    <td><label for="data_compra" class="text-white">Data da Compra:</label></td>
+                    <td><input type="checkbox" name="data_compra" id="data_compra" {% if filtros.data_compra == 'on' %}checked{% endif %}></td>
+                </tr>
+                <tr>
+                    <td><label for="pacote" class="text-white">Pacote:</label></td>
+                    <td><input type="checkbox" name="pacote" id="pacote" {% if filtros.pacote == 'on' %}checked{% endif %}></td>
+                    <td><label for="valor" class="text-white">Valor:</label></td>
+                    <td><input type="checkbox" name="valor" id="valor" {% if filtros.valor == 'on' %}checked{% endif %}></td>
+                </tr>
+                <tr>
+                    <td><label for="taxa_catarse" class="text-white">Taxa Catarse:</label></td>
+                    <td><input type="checkbox" name="taxa_catarse" id="taxa_catarse" {% if filtros.taxa_catarse == 'on' %}checked{% endif %}></td>
+                    <td><label for="faturamento" class="text-white">Faturamento:</label></td>
+                    <td><input type="checkbox" name="faturamento" id="faturamento" {% if filtros.faturamento == 'on' %}checked{% endif %}></td>
+                </tr>
+                <tr>
+                    <td><label for="acoes" class="text-white">Ações:</label></td>
+                    <td><input type="checkbox" name="acoes" id="acoes" {% if filtros.acoes == 'on' %}checked{% endif %}></td>
+                </tr>
+            </table>
+        </div>
         <div class="flex justify-center py-2">
-            <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Filtrar</button>
-            <a href="{% url 'download_compras' %}?formato={{ formato }}" id="downloadLink" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Compras</a>
+            <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Mostrar</button>
+            <a href="{% url 'download_compras' %}?formato={{ formato }}" id="downloadLink" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Apoios</a>
         </div>
     </form>
 
@@ -45,41 +84,43 @@
         <table class="w-full">
             <thead>
                 <tr>
-                    {% if filtros.nome == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Nome</div></th>{% endif %}
-                    {% if filtros.email == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Email</div></th>{% endif %}
-                    {% if filtros.numero == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Número</div></th>{% endif %}
-                    {% if filtros.data_compra == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Data da Compra</div></th>{% endif %}
-                    {% if filtros.pacote == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Pacote</div></th>{% endif %}
-                    {% if filtros.valor == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Valor</div></th>{% endif %}
-                    {% if filtros.taxa_catarse == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Taxa Catarse</div></th>{% endif %}
-                    {% if filtros.faturamento == 'on' %}<th><div class="py-3 px-6 text-left text-gray-200">Faturamento</div></th>{% endif %}
-                    <th><div class="py-3 px-6 text-left text-gray-200">Ações</div></th>
+                    {% if filtros.nome == 'on' %}<th><div class="py-3 px-6 text-left text-white">Nome</div></th>{% endif %}
+                    {% if filtros.email == 'on' %}<th><div class="py-3 px-6 text-left text-white">Email</div></th>{% endif %}
+                    {% if filtros.numero == 'on' %}<th><div class="py-3 px-6 text-left text-white">Número</div></th>{% endif %}
+                    {% if filtros.data_compra == 'on' %}<th><div class="py-3 px-6 text-left text-white">Data da Compra</div></th>{% endif %}
+                    {% if filtros.pacote == 'on' %}<th><div class="py-3 px-6 text-left text-white">Pacote</div></th>{% endif %}
+                    {% if filtros.valor == 'on' %}<th><div class="py-3 px-6 text-left text-white">Valor</div></th>{% endif %}
+                    {% if filtros.taxa_catarse == 'on' %}<th><div class="py-3 px-6 text-left text-white">Taxa Catarse</div></th>{% endif %}
+                    {% if filtros.faturamento == 'on' %}<th><div class="py-3 px-6 text-left text-white">Faturamento</div></th>{% endif %}
+                    {% if filtros.acoes == 'on' %}<th><div class="py-3 px-6 text-left text-white">Ações</div></th>{% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for compra in compras %}
                     <tr class="hover:bg-gray-600">
-                        {% if filtros.nome == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.nome }}</div></td>{% endif %}
-                        {% if filtros.email == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.email }}</div></td>{% endif %}
-                        {% if filtros.numero == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.numero_formatado }}</div></td>{% endif %}
-                        {% if filtros.data_compra == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.data_compra|date:"d/m/Y" }}</div></td>{% endif %}
-                        {% if filtros.pacote == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.pacote }}</div></td>{% endif %}
-                        {% if filtros.valor == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.valor_formatado }}</div></td>{% endif %}
-                        {% if filtros.taxa_catarse == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.taxa_catarse_formatada }}</div></td>{% endif %}
-                        {% if filtros.faturamento == 'on' %}<td><div class="py-3 px-6 text-left text-gray-200">{{ compra.faturamento_formatado }}</div></td>{% endif %}
+                        {% if filtros.nome == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.nome }}</div></td>{% endif %}
+                        {% if filtros.email == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.email }}</div></td>{% endif %}
+                        {% if filtros.numero == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.numero_formatado }}</div></td>{% endif %}
+                        {% if filtros.data_compra == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.data_compra|date:"d/m/Y" }}</div></td>{% endif %}
+                        {% if filtros.pacote == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.pacote }}</div></td>{% endif %}
+                        {% if filtros.valor == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.valor_formatado }}</div></td>{% endif %}
+                        {% if filtros.taxa_catarse == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.taxa_catarse_formatada }}</div></td>{% endif %}
+                        {% if filtros.faturamento == 'on' %}<td><div class="py-3 px-6 text-left text-white">{{ compra.faturamento_formatado }}</div></td>{% endif %}
+                        {% if filtros.acoes == 'on' %}
                         <td>
                             <div class="py-3 px-6 text-left">
                                 <a href="{% url 'editar_compra' compra.pk %}" class="text-blue-400 hover:text-blue-600 mr-2">Editar</a>
                                 <a href="{% url 'deletar_compra' compra.pk %}" class="text-red-400 hover:text-red-600">Deletar</a>
                             </div>
                         </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
-    <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95">Adicionar Nova Compra</a>
+    <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95">Adicionar Novo Apoio</a>
 
     <div id="configuracoesModal" class="hidden fixed inset-0 flex items-center justify-center z-50">
         <div class="modal-container bg-gray-800 text-white rounded-lg shadow-lg p-6">
@@ -128,6 +169,14 @@
             opcoesFiltros.classList.toggle('hidden');
         });
 
+        // Código para mostrar/ocultar as opções de busca
+        const botaoBusca = document.getElementById('toggleBusca');
+        const opcoesBusca = document.getElementById('opcoesBusca');
+
+        botaoBusca.addEventListener('click', () => {
+            opcoesBusca.classList.toggle('hidden');
+        });
+
         // Código para o modal de configurações
         const abrirConfiguracoes = document.getElementById('abrirConfiguracoes');
         const fecharConfiguracoes = document.getElementById('fecharConfiguracoes');
@@ -145,6 +194,17 @@
 
         formatoSelect.addEventListener('change', () => {
             downloadLink.href = `{% url 'download_compras' %}?formato=${formatoSelect.value}`;
+        });
+
+        // Checkbox "TODOS"
+        const checkboxTodos = document.getElementById('todos');
+        checkboxTodos.addEventListener('change', () => {
+            checkboxes.forEach(checkbox => {
+                if (checkbox !== checkboxTodos) {
+                    checkbox.checked = checkboxTodos.checked;
+                }
+            });
+            salvarFiltros(); 
         });
     </script>
 {% endblock %}

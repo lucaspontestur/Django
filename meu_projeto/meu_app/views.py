@@ -1,12 +1,31 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .models import Compra
-from .forms import CompraForm
+from .forms import CompraForm, BuscaForm
 import json
 from decimal import Decimal
 
 def lista_compras(request):
     compras = Compra.objects.all()
+    busca_form = BuscaForm(request.GET)
+
+    if busca_form.is_valid():
+        busca = busca_form.cleaned_data['busca']
+        data_inicio = busca_form.cleaned_data['data_inicio']
+        data_fim = busca_form.cleaned_data['data_fim']
+        valor_minimo = busca_form.cleaned_data['valor_minimo']
+        valor_maximo = busca_form.cleaned_data['valor_maximo']
+
+        if busca:
+            compras = compras.filter(texto_busca__icontains=busca)
+        if data_inicio:
+            compras = compras.filter(data_compra__gte=data_inicio)
+        if data_fim:
+            compras = compras.filter(data_compra__lte=data_fim)
+        if valor_minimo:
+            compras = compras.filter(valor__gte=valor_minimo)
+        if valor_maximo:
+            compras = compras.filter(valor__lte=valor_maximo)
 
     # Obter os filtros dos cookies
     filtros = {
@@ -18,6 +37,7 @@ def lista_compras(request):
         'valor': request.COOKIES.get('valor', 'off'),
         'taxa_catarse': request.COOKIES.get('taxa_catarse', 'off'),
         'faturamento': request.COOKIES.get('faturamento', 'off'),
+        'acoes': request.COOKIES.get('acoes', 'off'),
     }
 
     # Aplicar os filtros à consulta (adaptando para propriedades calculadas)
@@ -38,8 +58,16 @@ def lista_compras(request):
     if filtros['faturamento'] == 'on':
         compras = [c for c in compras if c.faturamento > Decimal('0.00')] # Filtra propriedades
 
+        
+
     # Renderizar o template com as compras filtradas e os filtros atuais
-    return render(request, 'lista_compras.html', {'compras': compras, 'filtros': filtros})
+    return render(request, 'lista_compras.html', {
+        'compras': compras,
+        'filtros': filtros,
+        'busca_form': busca_form,
+    })
+
+
 
 def nova_compra(request):
     if request.method == 'POST':

@@ -9,6 +9,21 @@ class Compra(models.Model):
     pacote = models.CharField(max_length=100)
     valor = models.DecimalField(max_digits=8, decimal_places=2)
 
+    texto_busca = models.TextField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.texto_busca =  ' '.join([
+            str(self.nome),
+            str(self.email),
+            str(self.numero),
+            str(self.data_compra),
+            str(self.pacote),
+            str(self.valor),
+            str(self.taxa_catarse),
+            str(self.faturamento)
+        ])
+        super().save(*args, **kwargs)
+
     @property
     def taxa_catarse(self):
         return self.valor * Decimal('0.13')
