@@ -1,34 +1,71 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block content %}
 <div class="flex flex-col items-center justify-center min-h-screen">
-    <div class="bg-gray-700 rounded-lg shadow-md p-6 text-center w-full max-w-2xl">
-        <h1 class="text-3xl font-bold text-gray-200 mb-8">Lista de Notas</h1>
+    <div class="bg-gray-700 rounded-lg shadow-md p-6 mx-auto max-w-xl w-full">
+        <h1 class="text-3xl font-bold text-gray-200 text-center mb-8">Lista de Notas</h1>
 
-        <a href="{% url 'criar_nota' %}" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md mb-4">
-            Criar Nova Nota
-        </a>
+        <div class="flex justify-center mb-4">
+            <a href="{% url 'criar_nota' %}" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md mr-2">Criar Nova Nota</a>
+            <form method="POST" action="{% url 'deletar_notas' %}" id="deletarNotasForm" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md">Deletar Notas</button>
+            </form>
+        </div>
 
         {% if notas %}
-            <ul class="list-disc text-white">
+            <ul class="list-disc text-white text-center">
                 {% for nota in notas %}
                     <li class="mb-4 p-4 rounded-md {% cycle 'bg-gray-600' 'bg-gray-500' %}">
-                        {% if nota.compra %}
-                            <p class="font-bold">{{ nota.compra }}</p>
-                        {% else %}
-                            <p class="font-bold">Nota sem ligação</p>
-                        {% endif %}
-                        <p>{{ nota.texto }}</p>
-                        <div class="mt-2">
-                            <a href="{% url 'editar_nota' nota.pk %}" class="text-blue-400 hover:text-blue-600 mr-2">Editar</a>
-                            <a href="{% url 'deletar_nota' nota.pk %}" class="text-red-400 hover:text-red-600">Deletar</a>
+                        <input type="checkbox" name="notas_a_deletar[]" value="{{ nota.pk }}" class="form-checkbox h-5 w-5 text-green-500 rounded hidden" form="deletarNotasForm">
+                        <div class="flex flex-col items-center justify-center">
+                            <p class="font-bold text-center mb-2">
+                                {% if nota.compra %}
+                                    {{ nota.compra }}
+                                {% else %}
+                                    {{ nota.titulo }}
+                                {% endif %}
+                            </p>
+                            <p class="nota-texto" style="height: 2rem; overflow: hidden; text-overflow: ellipsis; text-align: center;">{{ nota.texto }}</p>
+                            <div class="mt-4 flex justify-center">
+                                <a href="{% url 'ver_nota' nota.pk %}" class="text-yellow-400 hover:text-yellow-600 mr-2">Ver</a>
+                                <a href="{% url 'editar_nota' nota.pk %}" class="text-blue-400 hover:text-blue-600 mr-2">Editar</a>
+                                <a href="{% url 'deletar_nota' nota.pk %}" class="text-red-400 hover:text-red-600">Deletar</a>
+                            </div>
                         </div>
                     </li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="text-white">Nenhuma nota encontrada.</p>
+            <p class="text-white text-center">Nenhuma nota encontrada.</p>
         {% endif %}
     </div>
 </div>
+
+<script>
+    const checkboxes = document.querySelectorAll('input[name="notas_a_deletar[]"]');
+    const deleteButton = document.querySelector('#deletarNotasForm button[type="submit"]');
+
+    deleteButton.addEventListener('click', function(event) {
+        event.preventDefault(); 
+        checkboxes.forEach(checkbox => checkbox.classList.remove('hidden'));
+        this.textContent = 'Confirmar Deleção';
+
+        this.removeEventListener('click', arguments.callee);
+
+        this.addEventListener('click', function(event) {
+            // Verifica se pelo menos um checkbox está selecionado
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            if (anyChecked) {
+                const form = document.getElementById('deletarNotasForm');
+                if (form) {
+                    form.submit();
+                }
+            } else {
+                event.preventDefault(); // Impede o submit se nenhum estiver selecionado
+                alert('Selecione pelo menos uma nota para deletar.');
+            }
+        });
+    });
+</script>
 {% endblock %}

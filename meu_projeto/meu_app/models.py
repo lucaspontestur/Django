@@ -54,10 +54,11 @@ class Compra(models.Model):
 
 class Nota(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE, blank=True, null=True)
+    titulo = models.CharField(max_length=255, default="Nota")
     texto = models.TextField()
 
     def __str__(self):
         if self.compra:
             return f"Nota para {self.compra}"
         else:
-            return "Nota sem ligação"
+            return self.titulo

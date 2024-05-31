@@ -1,18 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="flex flex-col items-center justify-center min-h-screen">
-    <div class="bg-gray-700 rounded-lg shadow-md p-6 text-center w-full max-w-lg"> 
+<div class="flex flex-col items-center justify-center min-h-screen px-4"> 
+    <div class="bg-gray-700 rounded-lg shadow-md p-6 text-center w-full max-w-lg my-8">
         <h1 class="text-3xl font-bold text-gray-200 mb-8">
             {% if compra %}Criar Nota para {{ compra }}{% else %}Criar Nota Sem Ligação{% endif %}
         </h1>
 
-        <a href="{% url 'lista_compras' %}" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md mb-4">
-            Voltar para a Lista de Apoiadores
-        </a>
-
-        <form method="post" class="flex flex-col gap-4"> 
+        <form method="post" class="flex flex-col gap-6"> 
             {% csrf_token %}
+            <div class="mb-4"> 
+                <label for="{{ form.titulo.id_for_label }}" class="block text-gray-200 font-medium mb-2">
+                    Título:
+                </label>
+                {{ form.titulo }} 
+                {% if form.titulo.errors %}
+                    <ul class="mt-2 text-red-500">
+                        {% for error in form.titulo.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
             <div class="mb-4"> 
                 <label for="{{ form.texto.id_for_label }}" class="block text-gray-200 font-medium mb-2">
                     {{ form.texto.label }}

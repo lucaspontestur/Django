@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Compra, Nota  # adicione 'Nota' aqui
+from .models import Compra, Nota
 from .forms import CompraForm, BuscaForm, NotaForm
 import json
 from decimal import Decimal
@@ -11,15 +11,18 @@ def criar_nota(request, compra_id=None):
     else:
         compra = None
 
+    # Inicialize 'form' aqui
+    form = NotaForm()
+
     if request.method == 'POST':
         form = NotaForm(request.POST)
         if form.is_valid():
             nota = form.save(commit=False)
             nota.compra = compra
             nota.save()
-            return redirect('lista_compras')  # Redireciona para 'lista_compras' 
-    else:
-        form = NotaForm()
+            return redirect('listar_notas')
+    
+    # Agora 'form' está disponível para ambos os métodos
     return render(request, 'criar_nota.html', {'form': form, 'compra': compra})
 
 def criar_nota_compra(request, compra_id):
@@ -30,7 +33,7 @@ def criar_nota_compra(request, compra_id):
             nota = form.save(commit=False)
             nota.compra = compra
             nota.save()
-            return redirect('lista_compras')  # Redireciona para 'lista_compras'
+            return redirect('listar_notas')  # Redireciona para 'lista_compras'
     else:
         form = NotaForm()
     return render(request, 'criar_nota.html', {'form': form, 'compra': compra})
@@ -38,6 +41,11 @@ def criar_nota_compra(request, compra_id):
 def listar_notas(request):
     notas = Nota.objects.all()
     return render(request, 'listar_notas.html', {'notas': notas})
+
+def ver_nota(request, pk):
+    nota = get_object_or_404(Nota, pk=pk)
+    return render(request, 'ver_nota.html', {'nota': nota})
+
 
 def editar_nota(request, pk):
     nota = get_object_or_404(Nota, pk=pk)
@@ -56,6 +64,13 @@ def deletar_nota(request, pk):
         nota.delete()
         return redirect('listar_notas')  # Ou redirecionar para a página da compra relacionada
     return render(request, 'confirmar_delete_nota.html', {'nota': nota})
+
+def deletar_notas(request):
+    if request.method == 'POST':
+        notas_ids = request.POST.getlist('notas_a_deletar[]')
+        notas = Nota.objects.filter(id__in=notas_ids)
+        notas.delete()
+    return redirect('listar_notas')
 
 def lista_compras(request):
     compras = Compra.objects.all()

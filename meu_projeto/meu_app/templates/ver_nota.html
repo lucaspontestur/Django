@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex flex-col items-center justify-center min-h-screen">
+    <div class="bg-gray-700 rounded-lg shadow-md p-6 text-center w-full max-w-2xl">
+        <h1 class="text-3xl font-bold text-gray-200 mb-8">
+            {% if nota.compra %}
+                Nota para {{ nota.compra }}
+            {% else %}
+                {{ nota.titulo }} 
+            {% endif %}
+        </h1>
+        <p class="text-white">{{ nota.texto }}</p>
+    </div>
+</div>
+{% endblock %}

@@ -13,7 +13,7 @@ class NotaForm(forms.ModelForm):
 
     class Meta:
         model = Nota
-        fields = ['texto', 'compra']  # Inclua 'compra' nos campos do formulário
+        fields = ['compra', 'titulo', 'texto']  # Inclua 'titulo' aqui
 
 class CompraForm(forms.ModelForm):
     data_compra = forms.DateField(
