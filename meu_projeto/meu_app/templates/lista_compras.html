@@ -111,6 +111,7 @@
                             <div class="py-3 px-6 text-left">
                                 <a href="{% url 'editar_compra' compra.pk %}" class="text-blue-400 hover:text-blue-600 mr-2">Editar</a>
                                 <a href="{% url 'deletar_compra' compra.pk %}" class="text-red-400 hover:text-red-600">Deletar</a>
+                                <a href="{% url 'criar_nota_compra' compra.pk %}" class="text-green-400 hover:text-green-600">Nota</a>
                             </div>
                         </td>
                         {% endif %}

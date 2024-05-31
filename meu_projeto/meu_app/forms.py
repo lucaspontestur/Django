@@ -1,5 +1,19 @@
+# forms.py
 from django import forms
-from .models import Compra
+from .models import Nota, Compra
+
+class NotaForm(forms.ModelForm):
+    compra = forms.ModelChoiceField(
+        queryset=Compra.objects.all(), 
+        required=False, 
+        label="Ligação",
+        empty_label="Nota sem ligação",
+        widget=forms.Select(attrs={'class': 'block w-full px-4 py-2 border rounded-md shadow-sm text-gray-700 focus:outline-none focus:ring-blue-500 focus:border-blue-500'}) 
+    )
+
+    class Meta:
+        model = Nota
+        fields = ['texto', 'compra']  # Inclua 'compra' nos campos do formulário
 
 class CompraForm(forms.ModelForm):
     data_compra = forms.DateField(

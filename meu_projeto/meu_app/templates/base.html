@@ -9,6 +9,15 @@
 </head>
 <body class="bg-gray-800 text-black">
 
+    <nav class="bg-gray-900 py-4">
+        <div class="container mx-auto px-4 flex items-center justify-between">
+            <a href="{% url 'lista_compras' %}" class="text-white text-lg font-bold">Apoiadores</a>
+            <div>
+                <a href="{% url 'listar_notas' %}" class="text-white hover:text-gray-300 mr-4">Notas</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mx-auto px-4 py-8">
         {% block content %}
         {% endblock %}

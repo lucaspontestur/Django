@@ -50,3 +50,14 @@ class Compra(models.Model):
     @property
     def faturamento_formatado(self):
         return f"R$ {self.faturamento:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    
+
+class Nota(models.Model):
+    compra = models.ForeignKey(Compra, on_delete=models.CASCADE, blank=True, null=True)
+    texto = models.TextField()
+
+    def __str__(self):
+        if self.compra:
+            return f"Nota para {self.compra}"
+        else:
+            return "Nota sem ligação"

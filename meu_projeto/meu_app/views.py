@@ -1,9 +1,61 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .models import Compra
-from .forms import CompraForm, BuscaForm
+from .models import Compra, Nota  # adicione 'Nota' aqui
+from .forms import CompraForm, BuscaForm, NotaForm
 import json
 from decimal import Decimal
+
+def criar_nota(request, compra_id=None):
+    if compra_id:
+        compra = get_object_or_404(Compra, pk=compra_id)
+    else:
+        compra = None
+
+    if request.method == 'POST':
+        form = NotaForm(request.POST)
+        if form.is_valid():
+            nota = form.save(commit=False)
+            nota.compra = compra
+            nota.save()
+            return redirect('lista_compras')  # Redireciona para 'lista_compras' 
+    else:
+        form = NotaForm()
+    return render(request, 'criar_nota.html', {'form': form, 'compra': compra})
+
+def criar_nota_compra(request, compra_id):
+    compra = get_object_or_404(Compra, pk=compra_id)
+    if request.method == 'POST':
+        form = NotaForm(request.POST)
+        if form.is_valid():
+            nota = form.save(commit=False)
+            nota.compra = compra
+            nota.save()
+            return redirect('lista_compras')  # Redireciona para 'lista_compras'
+    else:
+        form = NotaForm()
+    return render(request, 'criar_nota.html', {'form': form, 'compra': compra})
+
+def listar_notas(request):
+    notas = Nota.objects.all()
+    return render(request, 'listar_notas.html', {'notas': notas})
+
+def editar_nota(request, pk):
+    nota = get_object_or_404(Nota, pk=pk)
+    if request.method == 'POST':
+        form = NotaForm(request.POST, instance=nota)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_notas')  # Ou redirecionar para a página da compra relacionada
+    else:
+        form = NotaForm(instance=nota)
+    return render(request, 'criar_nota.html', {'form': form, 'compra': nota.compra})
+
+def deletar_nota(request, pk):
+    nota = get_object_or_404(Nota, pk=pk)
+    if request.method == 'POST':
+        nota.delete()
+        return redirect('listar_notas')  # Ou redirecionar para a página da compra relacionada
+    return render(request, 'confirmar_delete_nota.html', {'nota': nota})
 
 def lista_compras(request):
     compras = Compra.objects.all()
