@@ -1,12 +1,21 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
     <h1 class="text-3xl font-bold text-center text-gray-200 mb-8">Lista de Apoiadores</h1>
 
     <div class="flex justify-center mb-4">
-        <button id="toggleFiltros" class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md mr-4">Filtrar</button>
-        <button id="toggleBusca" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded-md mr-4">Busca</button>
-        <button id="abrirConfiguracoes" class="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded-md">Configurações</button>
+        <button id="toggleFiltros" class="px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md mr-4 relative">
+            <img src="{% static 'funil.png' %}" alt="Filtrar" class="h-5 w-5">
+            <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Filtrar</span>
+        </button>
+        <button id="toggleBusca" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-700 text-white rounded-md mr-4 relative">
+            <img src="{% static 'lupa.png' %}" alt="Busca" class="h-5 w-5">
+            <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Busca</span>
+        </button>
+        <button id="abrirConfiguracoes" class="px-4 py-2 bg-gray-500 hover:bg-gray-700 text-white rounded-md relative">
+            <img src="{% static 'configuracoes.png' %}" alt="Configurações" class="h-5 w-5">
+            <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Configurações</span>
+        </button>
     </div>
 
     <form method="GET" id="filtroForm" class="mb-4">
@@ -75,8 +84,14 @@
             </table>
         </div>
         <div class="flex justify-center py-2">
-            <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md">Mostrar</button>
-            <a href="{% url 'download_compras' %}?formato={{ formato }}" id="downloadLink" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2">Baixar Apoios</a>
+            <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md relative" id="mostrarBotao">
+                <img src="{% static 'olho.png' %}" alt="Mostrar" class="inline-block h-5 w-5">
+                <span id="mostrarTooltip" class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2">Mostrar</span>
+            </button>
+            <a href="{% url 'download_compras' %}?formato={{ formato }}" id="downloadLink" class="px-4 py-2 bg-green-500 hover:bg-green-700 text-white rounded-md ml-2 relative">
+                <img src="{% static 'baixar.png' %}" alt="Baixar Apoios" class="h-5 w-5">
+                <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Baixar Apoios</span>
+            </a>
         </div>
     </form>
 
@@ -109,9 +124,18 @@
                         {% if filtros.acoes == 'on' %}
                         <td>
                             <div class="py-3 px-6 text-left">
-                                <a href="{% url 'editar_compra' compra.pk %}" class="text-blue-400 hover:text-blue-600 mr-2">Editar</a>
-                                <a href="{% url 'deletar_compra' compra.pk %}" class="text-red-400 hover:text-red-600">Deletar</a>
-                                <a href="{% url 'criar_nota_compra' compra.pk %}" class="text-green-400 hover:text-green-600">Nota</a>
+                                <a href="{% url 'editar_compra' compra.pk %}" class="text-blue-400 hover:text-blue-600 mr-2 relative">
+                                    <img src="{% static 'lapis2.png' %}" alt="Editar" class="inline-block h-5 w-5">
+                                    <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Editar</span>
+                                </a>
+                                <a href="{% url 'deletar_compra' compra.pk %}" class="text-red-400 hover:text-red-600 relative">
+                                    <img src="{% static 'lixo2.png' %}" alt="Deletar" class="inline-block h-5 w-5">
+                                    <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Deletar</span>
+                                </a>
+                                <a href="{% url 'criar_nota_compra' compra.pk %}" class="text-green-400 hover:text-green-600 relative">
+                                    <img src="{% static 'notas2.png' %}" alt="Nota" class="inline-block h-5 w-5">
+                                    <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Nota</span>
+                                </a>
                             </div>
                         </td>
                         {% endif %}
@@ -121,7 +145,10 @@
         </table>
     </div>
 
-    <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95">Adicionar Novo Apoio</a>
+    <a href="{% url 'nova_compra' %}" class="mt-4 block text-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md transition-all duration-300 ease-in-out transform hover:shadow-lg active:scale-95 relative">
+        <img src="{% static 'mais.png' %}" alt="Adicionar Novo Apoio" class="inline-block h-5 w-5">
+        <span class="absolute hidden bg-black text-white text-xs rounded py-1 px-2 z-10 top-full mt-2 left-1/2 -translate-x-1/2 tooltip">Adicionar Novo Apoio</span>
+    </a>
 
     <div id="configuracoesModal" class="hidden fixed inset-0 flex items-center justify-center z-50">
         <div class="modal-container bg-gray-800 text-white rounded-lg shadow-lg p-6">
@@ -137,6 +164,11 @@
         </div>
     </div>
 
+    <div id="mostrarUrl" class="hidden fixed bottom-2 left-2 bg-gray-800 text-white text-sm rounded py-1 px-2 z-50">
+        Mostrar
+    </div>
+
+    {% load static %} 
     <script>
         // Função para salvar os filtros nos cookies
         function salvarFiltros() {
@@ -206,6 +238,32 @@
                 }
             });
             salvarFiltros(); 
+        });
+
+        // Mostrar texto "Mostrar" no canto inferior esquerdo
+        const mostrarBotao = document.getElementById('mostrarBotao');
+        const mostrarTooltip = document.getElementById('mostrarTooltip');
+        const mostrarUrl = document.getElementById('mostrarUrl');
+
+        mostrarBotao.addEventListener('mouseover', () => {
+            mostrarTooltip.classList.remove('hidden');
+            mostrarUrl.classList.remove('hidden');
+        });
+
+        mostrarBotao.addEventListener('mouseout', () => {
+            mostrarTooltip.classList.add('hidden');
+            mostrarUrl.classList.add('hidden');
+        });
+
+        const tooltips = document.querySelectorAll('.tooltip');
+        tooltips.forEach(tooltip => {
+            const button = tooltip.parentNode;
+            button.addEventListener('mouseover', () => {
+                tooltip.classList.remove('hidden');
+            });
+            button.addEventListener('mouseout', () => {
+                tooltip.classList.add('hidden');
+            });
         });
     </script>
 {% endblock %}
