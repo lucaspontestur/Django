@@ -8,7 +8,6 @@ urlpatterns = [
     path('deletar/<int:pk>/', views.deletar_compra, name='deletar_compra'),
     path('download/', views.download_compras, name='download_compras'),
     
-    # Rotas para notas
     path('nota/criar/<int:compra_id>/', views.criar_nota, name='criar_nota_compra'),
     path('nota/criar/', views.criar_nota, name='criar_nota'),
     path('notas/', views.listar_notas, name='listar_notas'),

@@ -170,7 +170,7 @@
 
     {% load static %} 
     <script>
-        // Função para salvar os filtros nos cookies
+
         function salvarFiltros() {
             const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
@@ -178,23 +178,23 @@
             });
         }
 
-        // Função para aplicar os filtros à tabela
+
         function aplicarFiltros() {
             const form = document.getElementById('filtroForm');
             form.submit();
         }
 
-        // Salvar os filtros ao alterar as caixas de seleção
+       
         const checkboxes = document.querySelectorAll('#filtroForm input[type="checkbox"]');
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', salvarFiltros);
         });
 
-        // Aplicar os filtros ao submeter o formulário
+        
         const form = document.getElementById('filtroForm');
         form.addEventListener('submit', aplicarFiltros);
         
-        // Código para mostrar/ocultar as opções de filtro
+        
         const botaoFiltros = document.getElementById('toggleFiltros');
         const opcoesFiltros = document.getElementById('opcoesFiltros');
 
@@ -202,7 +202,7 @@
             opcoesFiltros.classList.toggle('hidden');
         });
 
-        // Código para mostrar/ocultar as opções de busca
+        
         const botaoBusca = document.getElementById('toggleBusca');
         const opcoesBusca = document.getElementById('opcoesBusca');
 
@@ -210,7 +210,7 @@
             opcoesBusca.classList.toggle('hidden');
         });
 
-        // Código para o modal de configurações
+        
         const abrirConfiguracoes = document.getElementById('abrirConfiguracoes');
         const fecharConfiguracoes = document.getElementById('fecharConfiguracoes');
         const configuracoesModal = document.getElementById('configuracoesModal');
@@ -229,7 +229,7 @@
             downloadLink.href = `{% url 'download_compras' %}?formato=${formatoSelect.value}`;
         });
 
-        // Checkbox "TODOS"
+        
         const checkboxTodos = document.getElementById('todos');
         checkboxTodos.addEventListener('change', () => {
             checkboxes.forEach(checkbox => {
@@ -240,7 +240,7 @@
             salvarFiltros(); 
         });
 
-        // Mostrar texto "Mostrar" no canto inferior esquerdo
+        
         const mostrarBotao = document.getElementById('mostrarBotao');
         const mostrarTooltip = document.getElementById('mostrarTooltip');
         const mostrarUrl = document.getElementById('mostrarUrl');

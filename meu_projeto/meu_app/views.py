@@ -11,7 +11,7 @@ def criar_nota(request, compra_id=None):
     else:
         compra = None
 
-    # Inicialize 'form' aqui
+
     form = NotaForm()
 
     if request.method == 'POST':
@@ -22,7 +22,7 @@ def criar_nota(request, compra_id=None):
             nota.save()
             return redirect('listar_notas')
     
-    # Agora 'form' está disponível para ambos os métodos
+    
     return render(request, 'criar_nota.html', {'form': form, 'compra': compra})
 
 def criar_nota_compra(request, compra_id):
@@ -33,7 +33,7 @@ def criar_nota_compra(request, compra_id):
             nota = form.save(commit=False)
             nota.compra = compra
             nota.save()
-            return redirect('listar_notas')  # Redireciona para 'lista_compras'
+            return redirect('listar_notas')  
     else:
         form = NotaForm()
     return render(request, 'criar_nota.html', {'form': form, 'compra': compra})
@@ -53,7 +53,7 @@ def editar_nota(request, pk):
         form = NotaForm(request.POST, instance=nota)
         if form.is_valid():
             form.save()
-            return redirect('listar_notas')  # Ou redirecionar para a página da compra relacionada
+            return redirect('listar_notas') 
     else:
         form = NotaForm(instance=nota)
     return render(request, 'criar_nota.html', {'form': form, 'compra': nota.compra})
@@ -62,7 +62,7 @@ def deletar_nota(request, pk):
     nota = get_object_or_404(Nota, pk=pk)
     if request.method == 'POST':
         nota.delete()
-        return redirect('listar_notas')  # Ou redirecionar para a página da compra relacionada
+        return redirect('listar_notas') 
     return render(request, 'confirmar_delete_nota.html', {'nota': nota})
 
 def deletar_notas(request):
@@ -94,7 +94,7 @@ def lista_compras(request):
         if valor_maximo:
             compras = compras.filter(valor__lte=valor_maximo)
 
-    # Obter os filtros dos cookies
+
     filtros = {
         'nome': request.COOKIES.get('nome', 'off'),
         'email': request.COOKIES.get('email', 'off'),
@@ -107,7 +107,7 @@ def lista_compras(request):
         'acoes': request.COOKIES.get('acoes', 'off'),
     }
 
-    # Aplicar os filtros à consulta (adaptando para propriedades calculadas)
+
     if filtros['nome'] == 'on':
         compras = compras.exclude(nome__isnull=True).exclude(nome__exact='')
     if filtros['email'] == 'on':
@@ -121,13 +121,12 @@ def lista_compras(request):
     if filtros['valor'] == 'on':
         compras = compras.exclude(valor__isnull=True)
     if filtros['taxa_catarse'] == 'on':
-        compras = [c for c in compras if c.taxa_catarse > Decimal('0.00')] # Filtra propriedades
+        compras = [c for c in compras if c.taxa_catarse > Decimal('0.00')] 
     if filtros['faturamento'] == 'on':
-        compras = [c for c in compras if c.faturamento > Decimal('0.00')] # Filtra propriedades
+        compras = [c for c in compras if c.faturamento > Decimal('0.00')] 
 
         
 
-    # Renderizar o template com as compras filtradas e os filtros atuais
     return render(request, 'lista_compras.html', {
         'compras': compras,
         'filtros': filtros,
@@ -140,8 +139,8 @@ def nova_compra(request):
     if request.method == 'POST':
         form = CompraForm(request.POST)
         if form.is_valid():
-            compra = form.save(commit=False)  # Não salve ainda
-            compra.data_compra = form.cleaned_data['data_compra'].strftime('%Y-%m-%d')  # Formata a data
+            compra = form.save(commit=False)  
+            compra.data_compra = form.cleaned_data['data_compra'].strftime('%Y-%m-%d')  
             compra.save()
             return redirect('lista_compras')
     else:
@@ -169,7 +168,7 @@ def deletar_compra(request, pk):
 def download_compras(request):
     compras = Compra.objects.all()
 
-    # Obter os filtros dos cookies
+
     filtros = {
         'nome': request.COOKIES.get('nome', 'off'),
         'email': request.COOKIES.get('email', 'off'),
@@ -181,7 +180,7 @@ def download_compras(request):
         'faturamento': request.COOKIES.get('faturamento', 'off'),
     }
 
-    # Filtrar os dados com base nos filtros dos cookies
+
     data = []
     for compra in compras:
         compra_data = {}
@@ -203,15 +202,15 @@ def download_compras(request):
             compra_data['faturamento'] = str(compra.faturamento)
         data.append(compra_data)
 
-    # Escolher o formato de download
+
     formato = request.GET.get('formato', 'estruturado')
     if formato == 'simples':
-        # Criar uma string com as informações separadas por quebra de linha
+
         conteudo = "\n".join([";".join(item.values()) for item in data])
         content_type = 'text/plain'
         filename = 'compras.txt'
     else:
-        # JSON estruturado
+   
         conteudo = json.dumps(data)
         content_type = 'application/json'
         filename = 'compras.json'

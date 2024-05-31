@@ -54,7 +54,7 @@
         this.removeEventListener('click', arguments.callee);
 
         this.addEventListener('click', function(event) {
-            // Verifica se pelo menos um checkbox está selecionado
+            
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             if (anyChecked) {
                 const form = document.getElementById('deletarNotasForm');
@@ -62,7 +62,7 @@
                     form.submit();
                 }
             } else {
-                event.preventDefault(); // Impede o submit se nenhum estiver selecionado
+                event.preventDefault(); 
                 alert('Selecione pelo menos uma nota para deletar.');
             }
         });
