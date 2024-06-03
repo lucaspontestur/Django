@@ -1,11 +1,21 @@
 <!DOCTYPE html>
+
+{% load static %}
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Apoiadores{% endblock %}</title>
+    <link rel="icon" href="{% static 'pontes2.png' %}" type="image/png"> 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     {% block extra_css %}{% endblock %}
+    <style>
+        body {
+            background-image: url("{% static 'pontes.png' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
 </head>
 <body class="bg-gray-800 text-black">
 
